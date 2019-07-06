@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3c077b80-cc4e-44ca-b74a-4f797fcc8c9d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/chargingLocation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/modelDefinitions/address.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/modelDefinitions/chargerType.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/modelDefinitions/chargingUnit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware/cors.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/cors.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/location.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -33,7 +25,7 @@
         <counts>
           <entry key="env" value="2" />
           <entry key="gitignore" value="1" />
-          <entry key="js" value="12" />
+          <entry key="js" value="13" />
           <entry key="json" value="2" />
           <entry key="md" value="2" />
         </counts>
@@ -41,19 +33,19 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="2" />
-          <entry key="JavaScript" value="12" />
+          <entry key="JavaScript" value="13" />
           <entry key="PLAIN_TEXT" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="env" value="36" />
-          <entry key="js" value="615" />
+          <entry key="js" value="698" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JavaScript" value="615" />
+          <entry key="JavaScript" value="698" />
           <entry key="PLAIN_TEXT" value="36" />
         </counts>
       </usages-collector>
@@ -73,17 +65,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/middleware/auth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="2" selection-start-line="36" selection-start-column="2" selection-end-line="36" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/middleware/cors.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
+            <state relative-caret-position="180">
+              <caret line="12" column="56" lean-forward="true" selection-start-line="12" selection-start-column="56" selection-end-line="12" selection-end-column="56" />
             </state>
           </provider>
         </entry>
@@ -97,34 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/auth.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="35" selection-start-column="35" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/modelDefinitions/address.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="23" selection-start-column="6" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/modelDefinitions/chargingUnit.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/modelDefinitions/chargerType.js">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/controllers/location.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
-              <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+              <caret line="12" column="15" selection-start-line="12" selection-start-column="15" selection-end-line="12" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -156,6 +116,7 @@
         <option value="$PROJECT_DIR$/src/controllers/auth.js" />
         <option value="$PROJECT_DIR$/src/middleware/auth.js" />
         <option value="$PROJECT_DIR$/src/middleware/cors.js" />
+        <option value="$PROJECT_DIR$/src/controllers/location.js" />
       </list>
     </option>
   </component>
@@ -204,18 +165,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="controllers" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="fullycharged-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fullycharged-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="middleware" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fullycharged-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fullycharged-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -235,6 +184,7 @@
       <recent name="$PROJECT_DIR$/src/models/modelDefinitions" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/controllers" />
       <recent name="$PROJECT_DIR$/src/models" />
     </key>
   </component>
@@ -260,12 +210,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1562369109569</updated>
-      <workItem from="1562369111586" duration="3465000" />
+      <workItem from="1562369111586" duration="3780000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3465000" />
+    <option name="totallyTimeSpent" value="3780000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
@@ -344,6 +294,27 @@
         <state relative-caret-position="-650" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/chargingLocation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="30" lean-forward="true" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middleware/cors.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middleware/auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="56" lean-forward="true" selection-start-line="12" selection-start-column="56" selection-end-line="12" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/models/modelDefinitions/chargerType.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -361,13 +332,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/auth.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="2" lean-forward="true" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/auth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -375,24 +339,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/chargingLocation.js">
+    <entry file="file://$PROJECT_DIR$/src/controllers/auth.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="30" lean-forward="true" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+        <state relative-caret-position="360">
+          <caret line="24" column="2" lean-forward="true" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/middleware/auth.js">
+    <entry file="file://$PROJECT_DIR$/src/controllers/location.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="2" selection-start-line="36" selection-start-column="2" selection-end-line="36" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middleware/cors.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
+        <state relative-caret-position="180">
+          <caret line="12" column="15" selection-start-line="12" selection-start-column="15" selection-end-line="12" selection-end-column="15" />
         </state>
       </provider>
     </entry>
