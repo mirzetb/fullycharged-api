@@ -1,17 +1,18 @@
-const express = require('express')
-const helmet = require('helmet')
+const express = require('express');
+const helmet = require('helmet');
 
-const cors = require('./src/middleware/cors')
-require('./src/db/mongoose')
-const auth = require('./src/routes/auth')
+const cors = require('./src/middleware/cors');
+require('./src/db/mongoose');
+const auth = require('./src/routes/auth');
+const chargingLocation = require('./src/routes/chargingLocation');
 
-const api = express()
-const port = process.env.PORT
+const api = express();
+const port = process.env.PORT;
 
 // Basic Middleware
-api.use(helmet())
-api.use(express.json())
-api.use(cors)
+api.use(helmet());
+api.use(express.json());
+api.use(cors);
 
 // Basic route
 api.get('/', (req, res) => {
@@ -21,9 +22,10 @@ api.get('/', (req, res) => {
 });
 
 // API routes
-api.use('/auth', auth)
+api.use('/auth', auth);
+api.use('/', chargingLocation);
 
 
 api.listen(port, () => {
     console.log('Server is up on port ' + port)
-})
+});
