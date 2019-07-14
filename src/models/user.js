@@ -35,7 +35,39 @@ const userSchema = new mongoose.Schema({
     }]
 }, {
     timestamps: true,
+    versionKey: false,
+    discriminatorKey: 'role'
+})
+
+const electricVehicleOwnerUserSchema = new mongoose.Schema({
+    volumeFeePrecentage: {
+        type: Number,
+        required: true,
+        default: 5.0
+    },
+    vehicleModel: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'VehicleModel',
+        required: true
+    }
+},{
     versionKey: false
+})
+
+const electricVehicleChargingProviderUserSchema = new mongoose.Schema({
+    revenueFeePrecentage: {
+        type: Number,
+        required: true,
+        default: 5.0
+    }
+},{
+    versionKey: false
+})
+
+electricVehicleChargingProviderUserSchema.virtual('chargingLocations', {
+    ref: 'ChargingLocation',
+    localField: '_id',
+    foreignField: 'owner'
 })
 
 userSchema.methods.toJSON = function() {
@@ -85,5 +117,11 @@ userSchema.pre('save', async function (next) {
 })
 
 const User = mongoose.model('User', userSchema)
+const EVOwner = User.discriminator('EVO', electricVehicleOwnerUserSchema)
+const EVChargingProvider = User.discriminator('EVCP', electricVehicleChargingProviderUserSchema)
 
-module.exports = User
+module.exports = {
+    User,
+    EVOwner,
+    EVChargingProvider
+}
