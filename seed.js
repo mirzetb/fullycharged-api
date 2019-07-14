@@ -31,7 +31,8 @@ const seed = async () => {
         chargingLevel: 3,
         connector: 'Tesla Supercharger'
     }]
-    await ChargerType.collection.insertMany(chargerTypes)
+    await ChargerType.insertMany(chargerTypes)
+    console.info('Inserted', chargerTypes.length, 'charger types.')
     
     // Vehicle models
     const vehicleModels = [{
@@ -98,8 +99,9 @@ const seed = async () => {
             power: 120
         }]
     }]
-    await VehicleModel.collection.insertMany(vehicleModels)
-
+    await VehicleModel.insertMany(vehicleModels)
+    console.info('Inserted', vehicleModels.length, 'vehicle models.')
+    
     const evcps = [{
         _id: new mongoose.Types.ObjectId(),
         name: 'TUM GreenEnergy',
@@ -123,7 +125,8 @@ const seed = async () => {
     await new EVCP(evcps[0]).save()
     await new EVCP(evcps[1]).save()
     await new EVCP(evcps[2]).save()
-
+    console.info('Inserted', evcps.length, 'EVCPs.')
+    
     const evos = [{
         _id: new mongoose.Types.ObjectId(),
         name: 'Elon Musk',
@@ -150,6 +153,7 @@ const seed = async () => {
     await new EVO(evos[0]).save()
     await new EVO(evos[1]).save()
     await new EVO(evos[2]).save()
+    console.info('Inserted', evos.length, 'EVOs.')
 
     // Charging Locations
     const chargingLocations = [{
@@ -207,7 +211,9 @@ const seed = async () => {
             coordinates: [11.538010, 48.144489]
         }
     }]
-    await ChargingLocation.collection.insertMany(chargingLocations)
+    await ChargingLocation.insertMany(chargingLocations)
+    console.info('Inserted', chargingLocations.length, 'locations.')
+    
 
     // Charging units in location Campus Garching
     const chargingUnits0 = [{
@@ -229,8 +235,9 @@ const seed = async () => {
             type: chargerTypes[1]._id
         }
     }]
-    await ChargingUnit.collection.insertMany(chargingUnits0)
-
+    await ChargingUnit.insertMany(chargingUnits0)
+    console.info('Inserted', chargingUnits0.length, 'charging units for location', chargingLocations[0].name)
+        
     // Charging units in location UnternehmerTUM
     const chargingUnits1 = [{
         name: '01',
@@ -265,8 +272,9 @@ const seed = async () => {
             type: chargerTypes[2]._id
         }
     }]
-    await ChargingUnit.collection.insertMany(chargingUnits1)
-
+    await ChargingUnit.insertMany(chargingUnits1)
+    console.info('Inserted', chargingUnits1.length, 'charging units for location', chargingLocations[1].name)
+        
     // Charging units in location Research and Technology House
     const chargingUnits2 = [{
         name: 'BMW01',
@@ -309,7 +317,8 @@ const seed = async () => {
             type: chargerTypes[3]._id
         }
     }]
-    await ChargingUnit.collection.insertMany(chargingUnits2)
+    await ChargingUnit.insertMany(chargingUnits2)
+    console.info('Inserted', chargingUnits2.length, 'charging units for location', chargingLocations[2].name)
 
     // Charging units in location The New Motion Max-Joseph-Platz 4
     const chargingUnits3 = [{
@@ -361,7 +370,8 @@ const seed = async () => {
             type: chargerTypes[4]._id
         }
     }]
-    await ChargingUnit.collection.insertMany(chargingUnits3)
+    await ChargingUnit.insertMany(chargingUnits3)
+    console.info('Inserted', chargingUnits3.length, 'charging units for location', chargingLocations[3].name)
 
     // Charging units in location Arabellapark
     const chargingUnits4 = [{
@@ -429,8 +439,9 @@ const seed = async () => {
             type: chargerTypes[3]._id
         }
     }]
-    await ChargingUnit.collection.insertMany(chargingUnits4)
-
+    await ChargingUnit.insertMany(chargingUnits4)
+    console.info('Inserted', chargingUnits4.length, 'charging units for location', chargingLocations[4].name)
+    
     // Charging units in location The New Motion Lilli-Palmer Str. 2
     const chargingUnits5 = [{
         name: 'SWM01',
@@ -449,7 +460,8 @@ const seed = async () => {
             type: chargerTypes[1]._id
         }
     }]
-    await ChargingUnit.collection.insertMany(chargingUnits5)
+    await ChargingUnit.insertMany(chargingUnits5)
+    console.info('Inserted', chargingUnits5.length, 'charging units for location', chargingLocations[5].name)
 
     // Bookings for tomorrow in location Campus Garching
     const today = new Date()
@@ -459,28 +471,29 @@ const seed = async () => {
 
     const bookings = [{
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 12, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 11, 59, 59),
         chargingUnit: chargingUnits0[0]._id,
         evo: evos[0]._id
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 12, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 16, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 15, 59, 59),
         chargingUnit: chargingUnits0[0]._id,
         evo: evos[1]._id
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 10, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 59, 59),
         chargingUnit: chargingUnits0[1]._id,
         evo: evos[2]._id
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 14, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 18, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 17, 59, 59),
         chargingUnit: chargingUnits0[1]._id,
         evo: evos[2]._id
     }]
-    await Booking.collection.insertMany(bookings)
+    await Booking.insertMany(bookings)
+    console.info('Inserted', bookings.length, 'bookings')
 
-    console.log('Seed finished.')
+    console.info('Seed finished.')
     process.exit()
 }
 
