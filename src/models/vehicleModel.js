@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const chargerSchema = require('./charger')
 
 const vehicleModelSchema = new mongoose.Schema({
     name: {
@@ -13,16 +14,7 @@ const vehicleModelSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    maxChargingPower: {
-        type: Number,
-        required: true
-    },
-    supportedChargerTypes: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'ChargerType',
-            required: true
-        }
-    ]
+    supportedChargers: [chargerSchema]
 }, {
     timestamps: true,
     versionKey: false

@@ -35,11 +35,6 @@ const chargingLocationSchema = new mongoose.Schema({
         required: true,
         ref: 'EVCP'
     },
-    // chargingUnits: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     // required: true,
-    //     ref: 'ChargingUnit'
-    // }],
     geoPoint: {
         type: pointSchema,
         required: true
@@ -60,8 +55,9 @@ chargingLocationSchema.set('toJSON', {
 })
 
 chargingLocationSchema.set('toObject', {
-    virtuals:true
+    virtuals: true
 })
+
 const ChargingLocation = mongoose.model('ChargingLocation', chargingLocationSchema)
 
 module.exports = ChargingLocation

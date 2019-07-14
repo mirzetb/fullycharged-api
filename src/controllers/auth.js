@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const { User, EVO, EVCP } = require('../models/user')
 
 const login = async (req, res) => {
     try {
@@ -12,7 +12,11 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const user = new User(req.body)
+    if (!req.body.role || !['EVO', 'EVCP'].includes(req.body.role)) {
+        return res.status(400).send('User role has to be specified (EVO or EVCP).')
+    }
+
+    const user = req.body.role === 'EVO' ? new EVO(req.body) : new EVCP(req.body)
 
     try {
         await user.save()

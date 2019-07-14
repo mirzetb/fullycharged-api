@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const chargerSchema = require('./charger')
 
 const chargingUnitSchema = new mongoose.Schema({
     name: {
@@ -25,12 +26,7 @@ const chargingUnitSchema = new mongoose.Schema({
         ref: 'ChargingLocation',
         required: true
     },
-    supportedChargerTypes: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'ChargerType',
-            required: true
-        }
-    ]
+    charger: chargerSchema
 }, {
     timestamps: true,
     versionKey: false

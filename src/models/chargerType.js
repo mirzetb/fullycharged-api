@@ -5,10 +5,6 @@ const chargerTypeSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    power: {
-        type: Number,
-        required: true
-    },
     connector: {
         type: String,
         required: true

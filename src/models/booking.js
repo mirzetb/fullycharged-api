@@ -23,7 +23,15 @@ const bookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'ChargingUnit'
+    },
+    evo: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'EVO'
     }
+}, {
+    timestamps: true,
+    versionKey: false
 })
 
 const Booking = mongoose.model('Booking', bookingSchema)

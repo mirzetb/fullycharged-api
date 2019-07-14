@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     discriminatorKey: 'role'
 })
 
-const electricVehicleOwnerUserSchema = new mongoose.Schema({
+const evoUserSchema = new mongoose.Schema({
     volumeFeePrecentage: {
         type: Number,
         required: true,
@@ -54,7 +54,19 @@ const electricVehicleOwnerUserSchema = new mongoose.Schema({
     versionKey: false
 })
 
-const electricVehicleChargingProviderUserSchema = new mongoose.Schema({
+evoUserSchema.virtual('bookings', {
+    ref: 'Booking',
+    localField: '_id',
+    foreignField: 'evo'
+})
+evoUserSchema.set('toJSON', {
+    virtuals: true
+})
+evoUserSchema.set('toObject', {
+    virtuals: true
+})
+
+const evcpUserSchema = new mongoose.Schema({
     revenueFeePrecentage: {
         type: Number,
         required: true,
@@ -63,11 +75,16 @@ const electricVehicleChargingProviderUserSchema = new mongoose.Schema({
 },{
     versionKey: false
 })
-
-electricVehicleChargingProviderUserSchema.virtual('chargingLocations', {
+evcpUserSchema.virtual('chargingLocations', {
     ref: 'ChargingLocation',
     localField: '_id',
     foreignField: 'owner'
+})
+evcpUserSchema.set('toJSON', {
+    virtuals: true
+})
+evcpUserSchema.set('toObject', {
+    virtuals: true
 })
 
 userSchema.methods.toJSON = function() {
@@ -112,16 +129,16 @@ userSchema.pre('save', async function (next) {
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }
-
+    
     next()
 })
 
 const User = mongoose.model('User', userSchema)
-const EVOwner = User.discriminator('EVO', electricVehicleOwnerUserSchema)
-const EVChargingProvider = User.discriminator('EVCP', electricVehicleChargingProviderUserSchema)
+const EVO = User.discriminator('EVO', evoUserSchema)
+const EVCP = User.discriminator('EVCP', evcpUserSchema)
 
 module.exports = {
     User,
-    EVOwner,
-    EVChargingProvider
+    EVO,
+    EVCP
 }
