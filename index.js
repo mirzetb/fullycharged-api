@@ -4,6 +4,7 @@ const helmet = require('helmet')
 const cors = require('./src/middleware/cors')
 require('./src/db/mongoose')
 const auth = require('./src/routes/auth')
+const locations = require('./src/routes/location')
 
 const api = express()
 const port = process.env.PORT
@@ -22,7 +23,7 @@ api.get('/', (req, res) => {
 
 // API routes
 api.use('/auth', auth)
-
+api.use('/locations', locations)
 
 api.listen(port, () => {
     console.log('Server is up on port ' + port)

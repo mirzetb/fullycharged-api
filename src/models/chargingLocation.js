@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { pointSchema } = require('./geoJSON')
+const ChargingUnit = require('./chargingUnit')
 
 const chargingLocationSchema = new mongoose.Schema({
     name: {
