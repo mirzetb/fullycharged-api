@@ -1,4 +1,8 @@
 const mongoose = require('mongoose')
+const { EVO } = require('./user')
+const ChargingUnit = require('./chargingUnit')
+const chargingSchema = require('./charging')
+const paymentSchema = require('./payment')
 
 const bookingSchema = new mongoose.Schema({
     startTime: {
@@ -19,6 +23,22 @@ const bookingSchema = new mongoose.Schema({
         required: true,
         default: false
     },
+    estimatedChargePercentage: {
+        type: Number,
+        required: true
+    },
+    estimatedChargekWh: {
+        type: Number,
+        required: true
+    }, 
+    estimatedChargingCost: {
+        type: Number,
+        required: true
+    },
+    estimatedVolumeFee: {
+        type: Number,
+        required: true
+    },
     chargingUnit: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -28,7 +48,9 @@ const bookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'EVO'
-    }
+    },
+    charging: chargingSchema,
+    payment: paymentSchema
 }, {
     timestamps: true,
     versionKey: false

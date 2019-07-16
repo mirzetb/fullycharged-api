@@ -1,8 +1,9 @@
 const validator = require('validator')
 const ChargingLocation = require('../models/chargingLocation')
 const Booking = require('../models/booking')
+const DailyStatistics = require('../models/dailyStatistics')
 
-// search?sw=lat,long&ne=lat,long&startDate=YYYY-MM-DD&startTime=NN&price=NN.NN
+// GET /locations/search?sw=lat,long&ne=lat,long&startDate=YYYY-MM-DD&startTime=NN&price=NN.NN
 const search = async (req, res) => {
     if (!req.query.sw || !req.query.ne || !validator.isLatLong(req.query.sw) || !validator.isLatLong(req.query.ne)) {
         return res.status(400).send('SW and NE coordinates not valid!')
@@ -114,6 +115,52 @@ const search = async (req, res) => {
     res.send(locations)
 }
 
+// Average charge time per day, last 7 days
+// Number of bookins per day, last 7 days
+// Energy sold per day, last 7 days
+// Revenue chart, last 12 months
+// PER LOCATION
+// GET /locations/:id/analytics
+const locationAnalytics = async (req, res) => {
+    const _id = req.params.id
+
+    return res.status(200).send('Called location alaytics for location' + _id)
+    
+    // const location = await ChargingLocation.findOne({ _id }).populate({
+    //     path: 'chargingUnits',
+    //     populate: {
+    //         path: 'charger.type',
+    //         model: 'ChargerType' 
+    //     }
+    // }).lean()
+    
+    // const dailyStatistics = await DailyStatistics.find({
+    //     chargingLocation: _id
+
+    // })
+    // res.send(location)
+}
+
+const calculateDailyStatistics = async (location, date) => {
+
+}
+
+const calculateRevenue = async (location, date) => {
+
+}
+
+// Average charge time per day, last 7 days
+// Number of bookins per day, last 7 days
+// Energy sold per day, last 7 days
+// Revenue chart, last 12 months
+// PER EVCP
+// GET /locations/analytics
+const globalAnalytics = async (req, res) => {
+    return res.status(200).send('Called global statistics')
+}
+
 module.exports = {
-    search
+    search,
+    locationAnalytics,
+    globalAnalytics
 }

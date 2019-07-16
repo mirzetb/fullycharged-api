@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const ChargerType = require('./chargerType')
 
 const chargerSchema = new mongoose.Schema({
     power: {

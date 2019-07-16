@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const chargerSchema = require('./charger')
+const ChargingLocation = require('./chargingLocation')
 
 const chargingUnitSchema = new mongoose.Schema({
     name: {

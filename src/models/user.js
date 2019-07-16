@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { VehicleModel } = require('./vehicleModel')
+const VehicleModel = require('./vehicleModel')
+const Booking = require('./booking')
+const ChargingLocation = require('./chargingLocation')
 
 const userSchema = new mongoose.Schema({
     name: {

@@ -1,16 +1,15 @@
 const mongoose = require('mongoose')
 const { pointSchema } = require('./geoJSON')
 const ChargingUnit = require('./chargingUnit')
+const { EVCP } = require('./user')
+const addressDefinition = require('./address')
 
 const chargingLocationSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
-    address: {
-        type: String,
-        required: true
-    },
+    address: addressDefinition,
     enabled: {
         type: Boolean,
         required: true,

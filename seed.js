@@ -159,7 +159,13 @@ const seed = async () => {
     const chargingLocations = [{
         _id: new mongoose.Types.ObjectId(),
         name: 'Campus Garching',
-        address: 'Boltzmannstraße 15, 85748 Garching Bei München',
+        address: {
+            street: 'Boltzmannstraße 15',
+            city: 'Garching bei München',
+            state: 'Bayern',
+            postalCode: '85748',
+            country: 'Deutschland'
+        },
         owner: evcps[0]._id,
         geoPoint: {
             type: 'Point',
@@ -168,7 +174,13 @@ const seed = async () => {
     }, {
         _id: new mongoose.Types.ObjectId(),
         name: 'UnternehmerTUM',
-        address: 'Lichtenbergstraße 6, 85748 Garching bei München',
+        address: {
+            street: 'Lichtenbergstraße 6',
+            city: 'Garching bei München',
+            state: 'Bayern',
+            postalCode: '85748',
+            country: 'Deutschland'
+        },
         owner: evcps[0]._id,
         geoPoint: {
             type: 'Point',
@@ -177,7 +189,13 @@ const seed = async () => {
     }, {
         _id: new mongoose.Types.ObjectId(),
         name: 'Research and Technology House',
-        address: 'Parkring 19, 85748 Garching bei München',
+        address: {
+            street: 'Parkring 19',
+            city: 'Garching bei München',
+            state: 'Bayern',
+            postalCode: '85748',
+            country: 'Deutschland'
+        },
         owner: evcps[2]._id,
         geoPoint: {
             type: 'Point',
@@ -185,8 +203,14 @@ const seed = async () => {
         }
     }, {
         _id: new mongoose.Types.ObjectId(),
-        name: 'The New Motion',
-        address: 'Max-Joseph-Platz 4, 80539 München',
+        name: 'The New Motion I',
+        address: {
+            street: 'Max-Joseph-Platz 4',
+            city: 'München',
+            state: 'Bayern',
+            postalCode: '80539',
+            country: 'Deutschland'
+        },
         owner: evcps[1]._id,
         geoPoint: {
             type: 'Point',
@@ -195,7 +219,13 @@ const seed = async () => {
     }, {
         _id: new mongoose.Types.ObjectId(),
         name: 'Arabellapark',
-        address: 'Arabellastraße 4, 81925 München',
+        address: {
+            street: 'Arabellastraße 4',
+            city: 'München',
+            state: 'Bayern',
+            postalCode: '81925',
+            country: 'Deutschland'
+        },
         owner: evcps[1]._id,
         geoPoint: {
             type: 'Point',
@@ -203,8 +233,14 @@ const seed = async () => {
         }
     }, {
         _id: new mongoose.Types.ObjectId(),
-        name: 'The New Motion',
-        address: 'Lilli-Palmer Str. 2, 80636 München',
+        name: 'The New Motion II',
+        address: {
+            street: 'Lilli-Palmer Str. 2',
+            city: 'München',
+            state: 'Bayern',
+            postalCode: '80636',
+            country: 'Deutschland'
+        },
         owner: evcps[1]._id,
         geoPoint: {
             type: 'Point',
@@ -214,7 +250,6 @@ const seed = async () => {
     await ChargingLocation.insertMany(chargingLocations)
     console.info('Inserted', chargingLocations.length, 'locations.')
     
-
     // Charging units in location Campus Garching
     const chargingUnits0 = [{
         _id: new mongoose.Types.ObjectId(),
@@ -473,21 +508,37 @@ const seed = async () => {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 11, 59, 59),
         chargingUnit: chargingUnits0[0]._id,
+        estimatedChargePercentage: 88,
+        estimatedChargekWh: 88,
+        estimatedChargingCost: 29.04,
+        estimatedVolumeFee: 1.452,
         evo: evos[0]._id
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 12, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 15, 59, 59),
         chargingUnit: chargingUnits0[0]._id,
+        estimatedChargePercentage: 100,
+        estimatedChargekWh: 42.2,
+        estimatedChargingCost: 13.926,
+        estimatedVolumeFee: 0.6963,
         evo: evos[1]._id
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 59, 59),
         chargingUnit: chargingUnits0[1]._id,
+        estimatedChargePercentage: 33,
+        estimatedChargekWh: 13.2,
+        estimatedChargingCost: 4.356,
+        estimatedVolumeFee: 0.2178,
         evo: evos[2]._id
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 14, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 17, 59, 59),
         chargingUnit: chargingUnits0[1]._id,
+        estimatedChargePercentage: 66,
+        estimatedChargekWh: 26.4,
+        estimatedChargingCost: 8.712,
+        estimatedVolumeFee: 0.4356,
         evo: evos[2]._id
     }]
     await Booking.insertMany(bookings)
