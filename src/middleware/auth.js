@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const jwt = require('jsonwebtoken')
+const { User, EVO, EVCP } = require('../models/user')
 
 const auth = (req, res, next) => {
     let token = '';
@@ -22,7 +22,7 @@ const auth = (req, res, next) => {
             })
         }
 
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+        let user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
         if (!user) {
             return res.status(401).send({
                 error: 'Unauthorized',
@@ -30,8 +30,13 @@ const auth = (req, res, next) => {
             })
         }
 
-        req.user = user;
-        req.token = token;
+        if (user.role == 'EVO') {
+            user = await EVO.findOne({ _id: user._id })
+            await user.populate('vehicleModel').execPopulate()
+        }
+
+        req.user = user
+        req.token = token
         next()
     })
 };
