@@ -172,5 +172,6 @@ const addLocation = async (req, res) => {
 module.exports = {
     search,
     locationAnalytics,
-    globalAnalytics
+    globalAnalytics,
+    addLocation
 }
