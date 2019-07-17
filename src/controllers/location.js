@@ -2,8 +2,9 @@ const validator = require('validator')
 const ChargingLocation = require('../models/chargingLocation')
 const Booking = require('../models/booking')
 const DailyStatistics = require('../models/dailyStatistics')
+const MonthlyStatistics = require('../models/monthlyStatistics')
+const { EVCP } = require('../models/user')
 
-// GET /locations/search?sw=lat,long&ne=lat,long&startDate=YYYY-MM-DD&startTime=NN&price=NN.NN
 const search = async (req, res) => {
     if (!req.query.sw || !req.query.ne || !validator.isLatLong(req.query.sw) || !validator.isLatLong(req.query.ne)) {
         return res.status(400).send('SW and NE coordinates not valid!')
@@ -120,33 +121,46 @@ const search = async (req, res) => {
 // Energy sold per day, last 7 days
 // Revenue chart, last 12 months
 // PER LOCATION
-// GET /locations/:id/analytics
 const locationAnalytics = async (req, res) => {
     const _id = req.params.id
 
-    return res.status(200).send('Called location alaytics for location' + _id)
+    const location = await ChargingLocation.findOne({ _id, owner: req.user._id }).populate({
+        path: 'chargingUnits',
+        populate: {
+            path: 'charger.type',
+            model: 'ChargerType' 
+        }
+    }).lean()
     
-    // const location = await ChargingLocation.findOne({ _id }).populate({
-    //     path: 'chargingUnits',
-    //     populate: {
-    //         path: 'charger.type',
-    //         model: 'ChargerType' 
-    //     }
-    // }).lean()
+    if(!location) {
+        return res.status(404).send('Location with id ' + _id + ' not found!')
+    }
+
+    let today = new Date()
+    today.setHours(0, 0, 0, 0)
     
-    // const dailyStatistics = await DailyStatistics.find({
-    //     chargingLocation: _id
+    let aWeekAgo = new Date()
+    aWeekAgo.setDate(today.getDate() - 7)
+    aWeekAgo.setHours(0, 0, 0, 0)
 
-    // })
-    // res.send(location)
-}
+    const dailyStatistics = await DailyStatistics.find({
+        chargingLocation: _id,
+        date: { $lt: today },
+        date: { $gte: aWeekAgo}
+    })
 
-const calculateDailyStatistics = async (location, date) => {
+    let firstDayOfTheMonht = (new Date(today)).setDate(1)
+    const monthlyStatistics = await MonthlyStatistics.find({
+        chargingLocation: _id,
+        date: { $lt:  firstDayOfTheMonht },
+        date: { $gte: (new Date(firstDayOfTheMonht)).setMonth(today.getMonth() - 12) }
+    })
 
-}
-
-const calculateRevenue = async (location, date) => {
-
+    res.send({
+        location,
+        dailyStatistics,
+        monthlyStatistics
+    })
 }
 
 // Average charge time per day, last 7 days
@@ -154,9 +168,34 @@ const calculateRevenue = async (location, date) => {
 // Energy sold per day, last 7 days
 // Revenue chart, last 12 months
 // PER EVCP
-// GET /locations/analytics
 const globalAnalytics = async (req, res) => {
-    return res.status(200).send('Called global statistics')
+    const locations = await ChargingLocation.find({ owner: req.user._id }).lean()
+   
+    let today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    let aWeekAgo = new Date()
+    aWeekAgo.setDate(today.getDate() - 7)
+    aWeekAgo.setHours(0, 0, 0, 0)
+
+    const dailyStatistics = await DailyStatistics.find({
+        evcp: req.user._id,
+        date: { $lt: today },
+        date: { $gte: aWeekAgo}
+    })
+
+    let firstDayOfTheMonht = (new Date(today)).setDate(1)
+    const monthlyStatistics = await MonthlyStatistics.find({
+        evcp: req.user._id,
+        date: { $lt:  firstDayOfTheMonht },
+        date: { $gte: (new Date(firstDayOfTheMonht)).setMonth(today.getMonth() - 12) }
+    })
+
+    res.send({
+        locations,
+        dailyStatistics,
+        monthlyStatistics
+    })
 }
 
 module.exports = {

@@ -7,6 +7,8 @@ const { EVO, EVCP } = require('./src/models/user')
 const ChargingLocation = require('./src/models/chargingLocation')
 const ChargingUnit = require('./src/models/chargingUnit')
 const Booking = require('./src/models/booking')
+const DailyStatistics = require('./src/models/dailyStatistics')
+const MonthlyStatistics = require('./src/models/monthlyStatistics')
 
 const seed = async () => {
     // Charger types
@@ -499,7 +501,9 @@ const seed = async () => {
     console.info('Inserted', chargingUnits5.length, 'charging units for location', chargingLocations[5].name)
 
     // Bookings for tomorrow in location Campus Garching
-    const today = new Date()
+    let today = new Date()
+    today.setHours(0, 0, 0, 0)
+
     let tomorrow = new Date()
     tomorrow.setDate(today.getDate() + 1)
     tomorrow.setHours(0, 0, 0, 0)
@@ -543,6 +547,267 @@ const seed = async () => {
     }]
     await Booking.insertMany(bookings)
     console.info('Inserted', bookings.length, 'bookings')
+
+    const locationDailyStatistcs = [{
+        date: new Date(today).setDate(today.getDate() - 1),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 12,
+        numberOfBookings: 5,
+        energySold: 112
+    }, {
+        date: new Date(today).setDate(today.getDate() - 2),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 18,
+        numberOfBookings: 9,
+        energySold: 156.5
+    },{
+        date: new Date(today).setDate(today.getDate() - 3),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 36,
+        numberOfBookings: 15,
+        energySold: 380.3
+    }, {
+        date: new Date(today).setDate(today.getDate() - 4),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 21,
+        numberOfBookings: 7,
+        energySold: 196.7
+    }, {
+        date: new Date(today).setDate(today.getDate() - 5),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 13,
+        numberOfBookings: 5,
+        energySold: 139
+    }, {
+        date: new Date(today).setDate(today.getDate() - 6),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 17,
+        numberOfBookings: 6,
+        energySold: 235
+    }, {
+        date: new Date(today).setDate(today.getDate() - 7),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 14,
+        numberOfBookings: 5,
+        energySold: 122
+    }, {
+        date: new Date(today).setDate(today.getDate() - 8),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 12,
+        numberOfBookings: 5,
+        energySold: 112
+    }, {
+        date: new Date(today).setDate(today.getDate() - 9),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 16,
+        numberOfBookings: 8,
+        energySold: 175
+    }, {
+        date: new Date(today).setDate(today.getDate() - 10),
+        chargingLocation: chargingLocations[0]._id,
+        chargeTime: 12,
+        numberOfBookings: 5,
+        energySold: 112
+    }, 
+    // 2nd Location
+    {
+        date: new Date(today).setDate(today.getDate() - 1),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 35,
+        numberOfBookings: 25,
+        energySold: 1050.7
+    },{
+        date: new Date(today).setDate(today.getDate() - 2),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 56,
+        numberOfBookings: 51,
+        energySold: 1836
+    },{
+        date: new Date(today).setDate(today.getDate() - 3),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 44,
+        numberOfBookings: 40,
+        energySold: 2051
+    },{
+        date: new Date(today).setDate(today.getDate() - 4),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 85,
+        numberOfBookings: 68,
+        energySold: 2720
+    },{
+        date: new Date(today).setDate(today.getDate() - 5),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 61.5,
+        numberOfBookings: 34,
+        energySold: 989
+    },{
+        date: new Date(today).setDate(today.getDate() - 6),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 66,
+        numberOfBookings: 60,
+        energySold: 2340
+    },{
+        date: new Date(today).setDate(today.getDate() - 7),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 80,
+        numberOfBookings: 56,
+        energySold: 3416
+    },{
+        date: new Date(today).setDate(today.getDate() - 1),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 13,
+        numberOfBookings: 5,
+        energySold: 136
+    },{
+        date: new Date(today).setDate(today.getDate() - 1),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 13,
+        numberOfBookings: 5,
+        energySold: 136
+    },{
+        date: new Date(today).setDate(today.getDate() - 1),
+        chargingLocation: chargingLocations[1]._id,
+        chargeTime: 13,
+        numberOfBookings: 5,
+        energySold: 136
+    }]
+
+    const globalDailyStatistics = []
+    var i;
+    for(let i = 0; i < 10; i++) {
+        const stat = {
+            date: locationDailyStatistcs[i].date,
+            evcp: evcps[0]._id,
+            chargeTime: locationDailyStatistcs[i].chargeTime + locationDailyStatistcs[i + 10].chargeTime,
+            numberOfBookings: locationDailyStatistcs[i].numberOfBookings + locationDailyStatistcs[i + 10].numberOfBookings,
+            energySold: locationDailyStatistcs[i].energySold + locationDailyStatistcs[i + 10].energySold
+        }
+
+        globalDailyStatistics.push(stat)
+    }
+
+    await DailyStatistics.insertMany(locationDailyStatistcs)
+    await DailyStatistics.insertMany(globalDailyStatistics)
+    console.info('Inserted 10 days of statistics (location and total) for', evcps[0].name)
+
+
+    const beginningOfTheMonth = new Date(new Date(today).setDate(1))
+
+    const locationMonthlyStatistics = [{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 1),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1485
+    }, {
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 2),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1840
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 3),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 2183
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 4),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1322
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 5),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 2563
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 6),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1499
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 7),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1685
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 8),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1852
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 9),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 2520
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 10),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1480
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 11),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1333
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 12),
+        chargingLocation: chargingLocations[0]._id,
+        revenue: 1654
+    },
+    // 2nd location
+    {
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 1),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 21425
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 2),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 16820
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 3),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 17425
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 4),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 20333
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 5),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 18444
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 6),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 13920
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 7),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 14821
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 8),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 18723
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 9),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 16890
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 10),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 20320
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 11),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 11824
+    },{
+        date: new Date(beginningOfTheMonth).setMonth(beginningOfTheMonth.getMonth() - 12),
+        chargingLocation: chargingLocations[1]._id,
+        revenue: 16420
+    }]
+
+    const globalMonthlyStatistics = []
+    var i;
+    for(let i = 0; i < 12; i++) {
+        const stat = {
+            date: locationMonthlyStatistics[i].date,
+            evcp: evcps[0]._id,
+            revenue: locationMonthlyStatistics[i].revenue + locationMonthlyStatistics[i + 12].revenue
+        }
+
+        globalMonthlyStatistics.push(stat)
+    }
+
+    await MonthlyStatistics.insertMany(locationMonthlyStatistics)
+    await MonthlyStatistics.insertMany(globalMonthlyStatistics)
+    console.info('Inserted 12 months of revenue statistics (location and total) for', evcps[0].name)
 
     console.info('Seed finished.')
     process.exit()

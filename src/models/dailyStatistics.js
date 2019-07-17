@@ -15,7 +15,7 @@ const dailyStatisticsSchema = new mongoose.Schema({
     },
     chargingLocation: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        required: false,
         ref: 'ChargingLocation'
     },
     chargeTime: {
