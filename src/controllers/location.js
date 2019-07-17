@@ -159,6 +159,16 @@ const globalAnalytics = async (req, res) => {
     return res.status(200).send('Called global statistics')
 }
 
+// Add location
+const addLocation = async (req, res) => {
+    try {
+        let chargingLocation = await ChargingLocation.create(req.body);
+        res.status(200).send(chargingLocation);
+    } catch (e) {
+        res.status(400).send(e)
+    }
+};
+
 module.exports = {
     search,
     locationAnalytics,
