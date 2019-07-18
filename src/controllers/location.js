@@ -1,7 +1,8 @@
-const validator = require('validator')
-const ChargingLocation = require('../models/chargingLocation')
-const Booking = require('../models/booking')
-const DailyStatistics = require('../models/dailyStatistics')
+const validator = require('validator');
+const ChargingLocation = require('../models/chargingLocation');
+const Booking = require('../models/booking');
+const DailyStatistics = require('../models/dailyStatistics');
+const ChargerType = require('../models/chargerType');
 
 // GET /locations/search?sw=lat,long&ne=lat,long&startDate=YYYY-MM-DD&startTime=NN&price=NN.NN
 const search = async (req, res) => {
@@ -169,9 +170,20 @@ const addLocation = async (req, res) => {
     }
 };
 
+// Get ChargingUnits
+const getChargerTypes = async (req, res) => {
+    try {
+        let chargingUnits = await ChargerType.find({});
+        res.status(200).send(chargingUnits);
+    } catch (e) {
+        res.status(400).send(e)
+    }
+};
+
 module.exports = {
     search,
     locationAnalytics,
     globalAnalytics,
-    addLocation
+    addLocation,
+    getChargerTypes
 }

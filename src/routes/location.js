@@ -8,5 +8,6 @@ router.get('/search', checkAuthentication, locationController.search);
 router.get('/:id/analytics', checkAuthentication, locationController.locationAnalytics);
 router.get('/analytics', checkAuthentication, locationController.globalAnalytics);
 router.post('/addlocation', locationController.addLocation);
+router.get('/chargertypes', locationController.getChargerTypes);
 
 module.exports = router;

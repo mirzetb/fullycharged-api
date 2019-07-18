@@ -33,6 +33,6 @@ const chargingUnitSchema = new mongoose.Schema({
     versionKey: false
 })
 
-const ChargingUnit = mongoose.model('ChargingUnit', chargingUnitSchema)
+const ChargingUnit = mongoose.model('ChargingUnit', chargingUnitSchema);
 
-module.exports = ChargingUnit
+module.exports = ChargingUnit;

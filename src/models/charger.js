@@ -11,6 +11,6 @@ const chargerSchema = new mongoose.Schema({
         ref: 'ChargerType',
         required: true
     }
-})
+});
 
 module.exports = chargerSchema
