@@ -49,6 +49,10 @@ const bookingSchema = new mongoose.Schema({
         required: true,
         ref: 'EVO'
     },
+    basicBookingFee: {
+        type: Number,
+        required: true
+    },
     charging: chargingSchema,
     payment: paymentSchema
 }, {

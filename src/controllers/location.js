@@ -19,7 +19,11 @@ const search = async (req, res) => {
     if (!startTime || startTime < 0 || startTime > 23) {
         return res.status(400).send('Start time not defined or invalid!')
     }
-    startDate.setHours(startTime)
+    startDate.setHours(startTime, 0, 0, 0)
+
+    if (startDate < new Date()) {
+        return res.status(400).send('Cannot search in past!')
+    }
 
     const price = !req.query.price ? 0 : parseFloat(req.query.price) 
     if(price < 0) {
@@ -71,15 +75,22 @@ const search = async (req, res) => {
         match: filterChargingUnits
     }).exec()
 
-    // Cache bookings for selected charing units 
+    // Cache coincident bookings for selected charging units 
     var chargingUnits = locations.map((location) => location.chargingUnits)
     chargingUnits = [].concat.apply([], chargingUnits).map((unit) => unit._id)
     const bookings = await Booking.find({
         chargingUnit: { $in: chargingUnits },
         canceled: false,
-        used: false,
         startTime: { $lte: startDate },
         endTime: { $gte: startDate } 
+    }).lean()
+
+    // Cache next bookings (for max available time)
+    const nextBookings = await Booking.find({
+        chargingUnit: { $in: chargingUnits },
+        canceled: false,
+        startTime: { $gt: startDate },
+        startTime: { $lt: new Date(startDate).setHours(startDate.getHours() + 12) }
     }).lean()
 
     // STATUS = EX | NA | OK
@@ -99,6 +110,15 @@ const search = async (req, res) => {
             // If there is a booking on this time for this unit, the unit is not available - NA
             if (bookings.some((booking) => booking.chargingUnit == unit._id.toString())) {
                 this[index]['status'] = 'NA'
+            }
+
+            // Find max duration
+            if (this[index]['status'] === 'OK') {
+                const nextBooking = nextBookings.filter(booking => booking.chargingUnit == unit._id.toString())
+                .sort((a, b) => a.startTime < b.startTime ? 1 : -1)
+
+                const duration = !nextBooking[0] ? 12 : (nextBooking[0].startTime - startDate) / 36e5
+                this[index]['maxDuration'] = Math.min(duration, 12)
             }
         }, location.chargingUnits)
      

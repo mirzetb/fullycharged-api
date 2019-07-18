@@ -509,40 +509,44 @@ const seed = async () => {
     tomorrow.setHours(0, 0, 0, 0)
 
     const bookings = [{
-        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 11, 59, 59),
+        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0, 0, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 11, 59, 59, 999),
         chargingUnit: chargingUnits0[0]._id,
         estimatedChargePercentage: 88,
         estimatedChargekWh: 88,
         estimatedChargingCost: 29.04,
-        estimatedVolumeFee: 1.452,
+        estimatedVolumeFee: 1.45,
+        basicBookingFee: 0.5,
         evo: evos[0]._id
     }, {
-        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 12, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 15, 59, 59),
+        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 12, 0, 0, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 15, 59, 59, 999),
         chargingUnit: chargingUnits0[0]._id,
         estimatedChargePercentage: 100,
         estimatedChargekWh: 42.2,
-        estimatedChargingCost: 13.926,
-        estimatedVolumeFee: 0.6963,
+        estimatedChargingCost: 13.93,
+        estimatedVolumeFee: 0.7,
+        basicBookingFee: 0.5,
         evo: evos[1]._id
     }, {
-        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 59, 59),
+        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0, 0, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 59, 59, 999),
         chargingUnit: chargingUnits0[1]._id,
         estimatedChargePercentage: 33,
         estimatedChargekWh: 13.2,
-        estimatedChargingCost: 4.356,
-        estimatedVolumeFee: 0.2178,
+        estimatedChargingCost: 4.36,
+        estimatedVolumeFee: 0.22,
+        basicBookingFee: 0.5,
         evo: evos[2]._id
     }, {
-        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 14, 0),
-        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 17, 59, 59),
+        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 14, 0, 0, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 17, 59, 59, 999),
         chargingUnit: chargingUnits0[1]._id,
         estimatedChargePercentage: 66,
         estimatedChargekWh: 26.4,
-        estimatedChargingCost: 8.712,
-        estimatedVolumeFee: 0.4356,
+        estimatedChargingCost: 8.71,
+        estimatedVolumeFee: 0.44,
+        basicBookingFee: 0.5,
         evo: evos[2]._id
     }]
     await Booking.insertMany(bookings)
