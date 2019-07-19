@@ -172,7 +172,8 @@ const seed = async () => {
         geoPoint: {
             type: 'Point',
             coordinates: [11.671068, 48.265722]
-        }
+        },
+        cancelationTimeout: 4
     }, {
         _id: new mongoose.Types.ObjectId(),
         name: 'UnternehmerTUM',
@@ -508,6 +509,18 @@ const seed = async () => {
     tomorrow.setDate(today.getDate() + 1)
     tomorrow.setHours(0, 0, 0, 0)
 
+    let yesterday = new Date()
+    yesterday.setDate(today.getDate() - 1)
+    yesterday.setHours(0, 0, 0, 0)
+
+    let twoDaysAgo = new Date()
+    twoDaysAgo.setDate(today.getDate() - 2)
+    twoDaysAgo.setHours(0, 0, 0, 0)
+
+    let someTimeAgo = new Date()
+    someTimeAgo.setDate(today.getDate() - 5)
+    someTimeAgo.setHours(0, 0, 0, 0)
+
     const bookings = [{
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0, 0, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 11, 59, 59, 999),
@@ -517,7 +530,8 @@ const seed = async () => {
         estimatedChargingCost: 29.04,
         estimatedVolumeFee: 1.45,
         basicBookingFee: 0.5,
-        evo: evos[0]._id
+        evo: evos[0]._id,
+        cancelationTimeout: 4
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 12, 0, 0, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 15, 59, 59, 999),
@@ -527,7 +541,105 @@ const seed = async () => {
         estimatedChargingCost: 13.93,
         estimatedVolumeFee: 0.7,
         basicBookingFee: 0.5,
-        evo: evos[1]._id
+        evo: evos[1]._id,
+        cancelationTimeout: 4
+    },{
+        startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 11, 0, 0, 0),
+        endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 14, 59, 59, 999),
+        chargingUnit: chargingUnits0[0]._id,
+        canceled: true,
+        canceledOn: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 6, 12, 15, 0),
+        estimatedChargePercentage: 100,
+        estimatedChargekWh: 42.2,
+        estimatedChargingCost: 13.93,
+        estimatedVolumeFee: 0.7,
+        basicBookingFee: 0.5,
+        evo: evos[1]._id,
+        cancelationTimeout: 4
+    },{
+        startTime: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 6, 0, 0, 0),
+        endTime: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 7, 59, 59, 999),
+        chargingUnit: chargingUnits0[1]._id,
+        canceled: true,
+        canceledOn: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 4, 35, 48, 0),
+        estimatedChargePercentage: 50,
+        estimatedChargekWh: 21.1,
+        estimatedChargingCost: 6.97,
+        estimatedVolumeFee: 0.35,
+        basicBookingFee: 0.5,
+        evo: evos[1]._id,
+        cancelationTimeout: 4,
+        payment: {
+            bookingFee: 0.5,
+            paid: true,
+            paidOn: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 5, 0, 0, 0)
+        }
+    },{
+        startTime: new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 8, 0, 0, 0),
+        endTime: new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 10, 59, 59, 999),
+        chargingUnit: chargingUnits0[1]._id,
+        estimatedChargePercentage: 78,
+        estimatedChargekWh: 33,
+        estimatedChargingCost: 10.89,
+        estimatedVolumeFee: 0.55,
+        basicBookingFee: 0.5,
+        evo: evos[1]._id,
+        cancelationTimeout: 4,
+        payment: {
+            bookingFee: 1.5,
+            paid: true,
+            paidOn: new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 11, 0, 0, 0)
+        }
+    },{
+        startTime: new Date(twoDaysAgo.getFullYear(), twoDaysAgo.getMonth(), twoDaysAgo.getDate(), 12, 0, 0, 0),
+        endTime: new Date(twoDaysAgo.getFullYear(), twoDaysAgo.getMonth(), twoDaysAgo.getDate(), 14, 59, 59, 999),
+        chargingUnit: chargingUnits0[0]._id,
+        used: true,
+        authorizedOn: new Date(twoDaysAgo.getFullYear(), twoDaysAgo.getMonth(), twoDaysAgo.getDate(), 12, 15, 58, 0),
+        estimatedChargePercentage: 78,
+        estimatedChargekWh: 33,
+        estimatedChargingCost: 10.89,
+        estimatedVolumeFee: 0.55,
+        basicBookingFee: 0.5,
+        evo: evos[1]._id,
+        cancelationTimeout: 4,
+        charging: {
+            startTime: new Date(twoDaysAgo.getFullYear(), twoDaysAgo.getMonth(), twoDaysAgo.getDate(), 12, 15, 58, 0),
+            endTime: new Date(twoDaysAgo.getFullYear(), twoDaysAgo.getMonth(), twoDaysAgo.getDate(), 14, 22, 14, 0),
+            energy: 21.68
+        }, 
+        payment: {
+            bookingFee: 0.5,
+            energyCost: 7.15,
+            percentageCost: 0.36,
+            paid: true,
+            paidOn: new Date(twoDaysAgo.getFullYear(), twoDaysAgo.getMonth(), twoDaysAgo.getDate(), 14, 22, 20, 0)
+        }
+    }, {
+        startTime: new Date(someTimeAgo.getFullYear(), someTimeAgo.getMonth(), someTimeAgo.getDate(), 12, 0, 0, 0),
+        endTime: new Date(someTimeAgo.getFullYear(), someTimeAgo.getMonth(), someTimeAgo.getDate(), 15, 59, 59, 999),
+        chargingUnit: chargingUnits0[1]._id,
+        used: true,
+        authorizedOn: new Date(someTimeAgo.getFullYear(), someTimeAgo.getMonth(), someTimeAgo.getDate(), 12, 10, 8, 0),
+        estimatedChargePercentage: 100,
+        estimatedChargekWh: 42.2,
+        estimatedChargingCost: 13.93,
+        estimatedVolumeFee: 0.7,
+        basicBookingFee: 0.5,
+        evo: evos[1]._id,
+        cancelationTimeout: 4,
+        charging: {
+            startTime: new Date(someTimeAgo.getFullYear(), someTimeAgo.getMonth(), someTimeAgo.getDate(), 12, 10, 8, 0),
+            endTime: new Date(someTimeAgo.getFullYear(), someTimeAgo.getMonth(), someTimeAgo.getDate(), 15, 33, 41, 0),
+            energy: 31.89
+        }, 
+        payment: {
+            bookingFee: 0.5,
+            energyCost: 10.52,
+            percentageCost: 0.53,
+            paid: true,
+            paidOn: new Date(someTimeAgo.getFullYear(), someTimeAgo.getMonth(), someTimeAgo.getDate(), 15, 33, 45, 0)
+        }
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 8, 0, 0, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 59, 59, 999),
@@ -537,7 +649,8 @@ const seed = async () => {
         estimatedChargingCost: 4.36,
         estimatedVolumeFee: 0.22,
         basicBookingFee: 0.5,
-        evo: evos[2]._id
+        evo: evos[2]._id,
+        cancelationTimeout: 4
     }, {
         startTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 14, 0, 0, 0),
         endTime: new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 17, 59, 59, 999),
@@ -547,7 +660,8 @@ const seed = async () => {
         estimatedChargingCost: 8.71,
         estimatedVolumeFee: 0.44,
         basicBookingFee: 0.5,
-        evo: evos[2]._id
+        evo: evos[2]._id,
+        cancelationTimeout: 4
     }]
     await Booking.insertMany(bookings)
     console.info('Inserted', bookings.length, 'bookings')

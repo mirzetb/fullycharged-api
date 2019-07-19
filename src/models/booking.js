@@ -18,10 +18,16 @@ const bookingSchema = new mongoose.Schema({
         required: true,
         default: false
     },
+    authorizedOn: {
+        type: Date
+    },
     canceled: {
         type: Boolean,
         required: true,
         default: false
+    },
+    canceledOn: {
+        type: Date
     },
     estimatedChargePercentage: {
         type: Number,
@@ -50,6 +56,10 @@ const bookingSchema = new mongoose.Schema({
         ref: 'EVO'
     },
     basicBookingFee: {
+        type: Number,
+        required: true
+    },
+    cancelationTimeout: {
         type: Number,
         required: true
     },
