@@ -3,6 +3,7 @@ const ChargingLocation = require('../models/chargingLocation');
 const Booking = require('../models/booking');
 const DailyStatistics = require('../models/dailyStatistics');
 const ChargerType = require('../models/chargerType');
+const ChargingUnit = require('../models/chargingUnit');
 
 // GET /locations/search?sw=lat,long&ne=lat,long&startDate=YYYY-MM-DD&startTime=NN&price=NN.NN
 const search = async (req, res) => {
@@ -163,7 +164,17 @@ const globalAnalytics = async (req, res) => {
 // Add location
 const addLocation = async (req, res) => {
     try {
-        let chargingLocation = await ChargingLocation.create(req.body);
+        let chargingLocation = req.body;
+        let chargingUnits = req.body.chargingUnits;
+        chargingLocation.geoPoint= {
+            type: 'Point',
+                coordinates: [11.671068, 48.265722]
+        };
+        chargingLocation = await ChargingLocation.create(chargingLocation);
+        chargingUnits.forEach((chargingUnit)=>{
+            chargingUnit.chargingLocation = chargingLocation._id;
+            ChargingUnit.create(chargingUnit);
+        });
         res.status(200).send(chargingLocation);
     } catch (e) {
         res.status(400).send(e)
@@ -180,10 +191,21 @@ const getChargerTypes = async (req, res) => {
     }
 };
 
+// Get all locations
+const getAllLocations = async (req, res) => {
+    try {
+        let locations = await ChargingLocation.find({deleted: false}).populate('chargingUnits');
+        res.status(200).send(locations);
+    } catch (e) {
+        res.status(400).send(e)
+    }
+};
+
 module.exports = {
     search,
     locationAnalytics,
     globalAnalytics,
     addLocation,
-    getChargerTypes
+    getChargerTypes,
+    getAllLocations
 }

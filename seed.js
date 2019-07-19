@@ -247,7 +247,7 @@ const seed = async () => {
             coordinates: [11.538010, 48.144489]
         }
     }]
-    await ChargingLocation.insertMany(chargingLocations)
+    await ChargingLocation.insertMany(chargingLocations);
     console.info('Inserted', chargingLocations.length, 'locations.')
     
     // Charging units in location Campus Garching
