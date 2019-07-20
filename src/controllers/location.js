@@ -1,8 +1,9 @@
-const validator = require('validator')
-const ChargingLocation = require('../models/chargingLocation')
-const Booking = require('../models/booking')
-const DailyStatistics = require('../models/dailyStatistics')
-const MonthlyStatistics = require('../models/monthlyStatistics')
+const validator = require('validator');
+const ChargingLocation = require('../models/chargingLocation');
+const Booking = require('../models/booking');
+const DailyStatistics = require('../models/dailyStatistics');
+const ChargerType = require('../models/chargerType');
+const ChargingUnit = require('../models/chargingUnit');
 const { EVCP } = require('../models/user')
 
 const search = async (req, res) => {
@@ -218,8 +219,51 @@ const globalAnalytics = async (req, res) => {
     })
 }
 
+// Add location
+const addLocation = async (req, res) => {
+    try {
+        let chargingLocation = req.body;
+        let chargingUnits = req.body.chargingUnits;
+        chargingLocation.geoPoint= {
+            type: 'Point',
+                coordinates: [11.671068, 48.265722]
+        };
+        chargingLocation = await ChargingLocation.create(chargingLocation);
+        chargingUnits.forEach((chargingUnit)=>{
+            chargingUnit.chargingLocation = chargingLocation._id;
+            ChargingUnit.create(chargingUnit);
+        });
+        res.status(200).send(chargingLocation);
+    } catch (e) {
+        res.status(400).send(e)
+    }
+};
+
+// Get ChargingUnits
+const getChargerTypes = async (req, res) => {
+    try {
+        let chargingUnits = await ChargerType.find({});
+        res.status(200).send(chargingUnits);
+    } catch (e) {
+        res.status(400).send(e)
+    }
+};
+
+// Get all locations
+const getAllLocations = async (req, res) => {
+    try {
+        let locations = await ChargingLocation.find({deleted: false}).populate('chargingUnits');
+        res.status(200).send(locations);
+    } catch (e) {
+        res.status(400).send(e)
+    }
+};
+
 module.exports = {
     search,
     locationAnalytics,
-    globalAnalytics
+    globalAnalytics,
+    addLocation,
+    getChargerTypes,
+    getAllLocations
 }

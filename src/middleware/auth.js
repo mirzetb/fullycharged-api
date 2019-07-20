@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const { User, EVO, EVCP } = require('../models/user')
 
 const auth = (req, res, next) => {
-    let token = ''
+    let token = '';
     if (req.header('Authorization')) {
         token = req.header('Authorization').replace('Bearer ', '')
     }
@@ -39,6 +39,6 @@ const auth = (req, res, next) => {
         req.token = token
         next()
     })
-}
+};
 
-module.exports = auth
+module.exports = auth;

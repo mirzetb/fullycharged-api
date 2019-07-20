@@ -25,7 +25,7 @@ const chargingLocationSchema = new mongoose.Schema({
         required: true,
         default: 0.5
     },
-    cancelationTimeout: {
+    cancellationTimeout: {
         type: Number,
         required: true,
         default: 2
@@ -38,25 +38,30 @@ const chargingLocationSchema = new mongoose.Schema({
     geoPoint: {
         type: pointSchema,
         required: true
-    }
+    },
+    // chargingUnits: {
+    //     type: mongoose.Schema.Types.Mixed,
+    //     ref: 'ChargingUnit',
+    //     required: true
+    // }
 }, {
     timestamps: true,
     versionKey: false
-})
+});
 
 chargingLocationSchema.virtual('chargingUnits', {
     ref: 'ChargingUnit',
     localField: '_id',
     foreignField: 'chargingLocation'
-})
+});
 
 chargingLocationSchema.set('toJSON', {
     virtuals: true
-})
+});
 
 chargingLocationSchema.set('toObject', {
     virtuals: true
-})
+});
 
 const ChargingLocation = mongoose.model('ChargingLocation', chargingLocationSchema)
 

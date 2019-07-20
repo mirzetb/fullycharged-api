@@ -6,3 +6,6 @@
 3. Add `dev.env` file in `config` directory with `PORT`, `JWT_SECRET` and `MONGODB_URL` variables set
 4. from root directory run `npm install`
 5. from root directory run `npm run dev`
+
+Note: To run seed file execute:
+# 'npm run seed'
