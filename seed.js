@@ -771,19 +771,19 @@ const seed = async () => {
         numberOfBookings: 56,
         energySold: 3416
     },{
-        date: new Date(today).setDate(today.getDate() - 1),
+        date: new Date(today).setDate(today.getDate() - 8),
         chargingLocation: chargingLocations[1]._id,
         chargeTime: 13,
         numberOfBookings: 5,
         energySold: 136
     },{
-        date: new Date(today).setDate(today.getDate() - 1),
+        date: new Date(today).setDate(today.getDate() - 9),
         chargingLocation: chargingLocations[1]._id,
         chargeTime: 13,
         numberOfBookings: 5,
         energySold: 136
     },{
-        date: new Date(today).setDate(today.getDate() - 1),
+        date: new Date(today).setDate(today.getDate() - 10),
         chargingLocation: chargingLocations[1]._id,
         chargeTime: 13,
         numberOfBookings: 5,

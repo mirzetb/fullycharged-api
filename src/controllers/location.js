@@ -4,7 +4,8 @@ const Booking = require('../models/booking');
 const DailyStatistics = require('../models/dailyStatistics');
 const ChargerType = require('../models/chargerType');
 const ChargingUnit = require('../models/chargingUnit');
-const { EVCP } = require('../models/user')
+const { EVCP } = require('../models/user');
+const MonthlyStatistics = require('../models/monthlyStatistics');
 
 const search = async (req, res) => {
     if (!req.query.sw || !req.query.ne || !validator.isLatLong(req.query.sw) || !validator.isLatLong(req.query.ne)) {
