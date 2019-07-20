@@ -28,7 +28,7 @@ const chargingLocationSchema = new mongoose.Schema({
     cancellationTimeout: {
         type: Number,
         required: true,
-        default: 120
+        default: 2
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

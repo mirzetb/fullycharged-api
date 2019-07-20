@@ -7,11 +7,11 @@ const paymentSchema = new mongoose.Schema({
     },
     energyCost: {
         type: Number,
-        required: true
+        required: false
     },
     percentageCost: {
         type: Number,
-        required: true
+        required: false
     },
     paid: {
         type: Boolean,
@@ -19,9 +19,6 @@ const paymentSchema = new mongoose.Schema({
         default: false
     }, 
     paidOn: {
-        type: Date
-    },
-    paymentDueDate: {
         type: Date
     }
 })

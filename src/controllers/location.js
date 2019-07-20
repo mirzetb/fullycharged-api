@@ -4,8 +4,8 @@ const Booking = require('../models/booking');
 const DailyStatistics = require('../models/dailyStatistics');
 const ChargerType = require('../models/chargerType');
 const ChargingUnit = require('../models/chargingUnit');
+const { EVCP } = require('../models/user')
 
-// GET /locations/search?sw=lat,long&ne=lat,long&startDate=YYYY-MM-DD&startTime=NN&price=NN.NN
 const search = async (req, res) => {
     if (!req.query.sw || !req.query.ne || !validator.isLatLong(req.query.sw) || !validator.isLatLong(req.query.ne)) {
         return res.status(400).send('SW and NE coordinates not valid!')
@@ -17,16 +17,20 @@ const search = async (req, res) => {
     }
 
     const startTime = parseInt(req.query.startTime)
-    if (!startTime || startTime < 0 || startTime > 23) {
+    if (Number.isNaN(startTime) || startTime < 0 || startTime > 23) {
         return res.status(400).send('Start time not defined or invalid!')
     }
-    startDate.setHours(startTime)
+    startDate.setHours(startTime, 0, 0, 0)
+
+    if (startDate < new Date()) {
+        return res.status(400).send('Cannot search in past!')
+    }
 
     const price = !req.query.price ? 0 : parseFloat(req.query.price) 
     if(price < 0) {
         return res.status(400).send('Invalid price!')
     }
-    
+
     const sw = req.query.sw.split(',')
     const SW = {
         lat: parseFloat(sw[0]),
@@ -72,15 +76,25 @@ const search = async (req, res) => {
         match: filterChargingUnits
     }).exec()
 
-    // Cache bookings for selected charing units 
+    // Cache coincident bookings for selected charging units or user's concurrent bookings
     var chargingUnits = locations.map((location) => location.chargingUnits)
     chargingUnits = [].concat.apply([], chargingUnits).map((unit) => unit._id)
     const bookings = await Booking.find({
-        chargingUnit: { $in: chargingUnits },
+        $or: [{ 
+            chargingUnit: { $in: chargingUnits }
+        },{ 
+            evo: req.user._id 
+        }],
         canceled: false,
-        used: false,
         startTime: { $lte: startDate },
         endTime: { $gte: startDate } 
+    }).lean()
+
+    // Cache next bookings (for max available time)
+    const nextBookings = await Booking.find({
+        chargingUnit: { $in: chargingUnits },
+        canceled: false,
+        startTime: { $gt: startDate, $lt: new Date(startDate).setHours(startDate.getHours() + 12) }
     }).lean()
 
     // STATUS = EX | NA | OK
@@ -97,9 +111,19 @@ const search = async (req, res) => {
                 }
             }
 
-            // If there is a booking on this time for this unit, the unit is not available - NA
-            if (bookings.some((booking) => booking.chargingUnit == unit._id.toString())) {
+            // If there is a booking on this time for this unit, the unit is not available - NA || user has a booking on this time
+            if (bookings.some((booking) => booking.chargingUnit == unit._id.toString())
+            || bookings.some((booking) => booking.evo == req.user._id.toString())) {
                 this[index]['status'] = 'NA'
+            }
+
+            // Find max duration
+            if (this[index]['status'] === 'OK') {
+                const nextBooking = nextBookings.filter(booking => booking.chargingUnit == unit._id.toString())
+                .sort((a, b) => a.startTime < b.startTime ? 1 : -1)
+
+                const duration = !nextBooking[0] ? 12 : (nextBooking[0].startTime - startDate) / 36e5
+                this[index]['maxDuration'] = Math.min(duration, 12)
             }
         }, location.chargingUnits)
      
@@ -122,33 +146,44 @@ const search = async (req, res) => {
 // Energy sold per day, last 7 days
 // Revenue chart, last 12 months
 // PER LOCATION
-// GET /locations/:id/analytics
 const locationAnalytics = async (req, res) => {
     const _id = req.params.id
 
-    return res.status(200).send('Called location alaytics for location' + _id)
+    const location = await ChargingLocation.findOne({ _id, owner: req.user._id }).populate({
+        path: 'chargingUnits',
+        populate: {
+            path: 'charger.type',
+            model: 'ChargerType' 
+        }
+    }).lean()
     
-    // const location = await ChargingLocation.findOne({ _id }).populate({
-    //     path: 'chargingUnits',
-    //     populate: {
-    //         path: 'charger.type',
-    //         model: 'ChargerType' 
-    //     }
-    // }).lean()
+    if(!location) {
+        return res.status(404).send('Location with id ' + _id + ' not found!')
+    }
+
+    let today = new Date()
+    today.setHours(0, 0, 0, 0)
     
-    // const dailyStatistics = await DailyStatistics.find({
-    //     chargingLocation: _id
+    let aWeekAgo = new Date()
+    aWeekAgo.setDate(today.getDate() - 7)
+    aWeekAgo.setHours(0, 0, 0, 0)
 
-    // })
-    // res.send(location)
-}
+    const dailyStatistics = await DailyStatistics.find({
+        chargingLocation: _id,
+        date: { $lt: today, $gte: aWeekAgo }
+    })
 
-const calculateDailyStatistics = async (location, date) => {
+    let firstDayOfTheMonht = (new Date(today)).setDate(1)
+    const monthlyStatistics = await MonthlyStatistics.find({
+        chargingLocation: _id,
+        date: { $lt:  firstDayOfTheMonht, $gte: (new Date(firstDayOfTheMonht)).setMonth(today.getMonth() - 12) }
+    })
 
-}
-
-const calculateRevenue = async (location, date) => {
-
+    res.send({
+        location,
+        dailyStatistics,
+        monthlyStatistics
+    })
 }
 
 // Average charge time per day, last 7 days
@@ -156,9 +191,32 @@ const calculateRevenue = async (location, date) => {
 // Energy sold per day, last 7 days
 // Revenue chart, last 12 months
 // PER EVCP
-// GET /locations/analytics
 const globalAnalytics = async (req, res) => {
-    return res.status(200).send('Called global statistics')
+    const locations = await ChargingLocation.find({ owner: req.user._id }).lean()
+   
+    let today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    let aWeekAgo = new Date()
+    aWeekAgo.setDate(today.getDate() - 7)
+    aWeekAgo.setHours(0, 0, 0, 0)
+
+    const dailyStatistics = await DailyStatistics.find({
+        evcp: req.user._id,
+        date: { $lt: today, $gte: aWeekAgo }
+    })
+
+    let firstDayOfTheMonht = (new Date(today)).setDate(1)
+    const monthlyStatistics = await MonthlyStatistics.find({
+        evcp: req.user._id,
+        date: { $lt:  firstDayOfTheMonht, $gte: (new Date(firstDayOfTheMonht)).setMonth(today.getMonth() - 12) }
+    })
+
+    res.send({
+        locations,
+        dailyStatistics,
+        monthlyStatistics
+    })
 }
 
 // Add location
