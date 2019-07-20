@@ -11,7 +11,8 @@ router.get('/:id/analytics', checkAuthentication, locationController.locationAna
 // GET /locations/analytics
 router.get('/analytics', checkAuthentication, locationController.globalAnalytics)
 router.post('/addlocation', locationController.addLocation);
-router.get('/alllocations', locationController.getAllLocations);
+router.get('/alllocations/:ownerId', locationController.getAllLocations);
 router.get('/chargertypes', locationController.getChargerTypes);
+router.put('', locationController.updateLocation);
 
 module.exports = router;
