@@ -38,12 +38,7 @@ const chargingLocationSchema = new mongoose.Schema({
     geoPoint: {
         type: pointSchema,
         required: true
-    },
-    // chargingUnits: {
-    //     type: mongoose.Schema.Types.Mixed,
-    //     ref: 'ChargingUnit',
-    //     required: true
-    // }
+    }
 }, {
     timestamps: true,
     versionKey: false
